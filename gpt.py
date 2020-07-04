@@ -1,39 +1,32 @@
 import gpt_2_simple as gpt2
 import os
-import gc
 import tensorflow as tf
 import random
 
-session = gpt2.start_tf_sess(threads=1)
-gpt2.load_gpt2(session)
+# NOTE: everything non-static should live in /tmp
+# NOTE: every finetuned model should be named by model_id
 
-
-# TODO: eventually need to use /tmp for any files generated below
 # TODO: play with settings for finetune and generate to speed it up
-# TODO: auto clean up files in the checkpoint folder
 # TODO: investigate output; finetune doesn't have much effect
+# TODO: <|startoftext|> and <|endoftext|> tokens???
+# TODO: use a different gpt-2 module? https://github.com/huggingface/transformers?
 
-def finetune_and_generate(training_strings, prompt, num_words):
 
+def finetune(model_id, training_strings):
     while not sum([len(string.split()) for string in training_strings]) > 1023:
         training_strings.append(random.choice(training_strings))
-
-    tf.reset_default_graph()
-    global session
-    session = gpt2.start_tf_sess(threads=1)
-
-    with open("tmp/training.txt", "w") as training_fp:
+    filename = "tmp/%s.txt" % model_id
+    with open(filename, "w") as training_fp:
         for training_string in training_strings:
             training_fp.write(training_string + '\n')
 
-    gpt2.finetune(session, "tmp/training.txt", steps=1)
+    # TODO: re-implement finetuning
 
-    text = gpt2.generate(session,
-                         prefix=prompt,
-                         length=num_words if num_words else 100,
-                         return_as_list=True)[0]
+    os.remove(filename)
 
-    os.remove("tmp/training.txt")
-    gc.collect()
 
-    return text
+def generate(model_id, prompt, num_words):
+
+    # TODO: re-implement generating
+
+    return None
