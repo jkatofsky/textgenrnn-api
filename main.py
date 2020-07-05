@@ -14,6 +14,7 @@ ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 #       - /generate N times per minute
 # TODO: change routes to be more CRUD-y? create, re-train, delete?
 # TODO: good logging!
+# TODO: include download_model script in repo?
 
 
 @app.route("/modelExpired", methods=['POST'])
@@ -23,7 +24,7 @@ async def model_expired(request):
 
     model_id = data.get('model_id', None)
 
-    _, is_expired = auth.authenticate_id(model_id)
+    is_valid_model_id = auth.is_valid_id(model_id)
 
     return json({'is_expired': is_expired},
                 status=200,
@@ -40,7 +41,7 @@ async def finetune(request):
 
     gpt.finetune(model_id, training_strings)
 
-    auth.set_expiration_time(model_id)
+    auth.reset_expiration_time(model_id)
 
     return json({'model_id': model_id},
                 status=200,
@@ -55,15 +56,19 @@ async def generate(request):
     prompt = data.get('prompt', None)
     num_words = data.get('num_words', None)
 
-    model_id, expired = auth.authenticate_id(model_id)
+    is_valid_model_id = auth.is_valid_id(model_id)
+
+    auth.using_model(model_id)
 
     output = gpt.generate(model_id, prompt, num_words)
 
-    auth.set_expiration_time(model_id)
+    auth.reset_expiration_time(model_id)
 
     return json({'output': output},
                 status=200,
                 headers=ALLOW_ACCESS_HEADER)
 
+
 if __name__ == "__main__":
+    app.add_task(auth.cleanup_loop())
     app.run(host="0.0.0.0", port=8000)
