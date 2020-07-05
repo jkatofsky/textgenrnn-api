@@ -6,6 +6,7 @@ import os
 # my PR for the fix: https://github.com/minimaxir/textgenrnn/pull/199
 
 # TODO: verbose = 0 on prod
+# TODO: verify that chdir solution compatible w/ multiple simultaneous calls
 
 
 BASE_DIR = os.getcwd()
