@@ -12,7 +12,7 @@ MODEL_CLEANUP_INTERVAL = 60  # run cleanup every minute
 
 def create_model_id():
     model_id = secrets.token_urlsafe(nbytes=16)
-    model_id_last_used_map[model_id] = None
+    using_model(model_id)
     return model_id
 
 
