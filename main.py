@@ -1,6 +1,6 @@
 from sanic import Sanic
 from sanic.response import json
-import gpt
+import rnn
 import auth
 
 app = Sanic(__name__)
@@ -8,13 +8,12 @@ app = Sanic(__name__)
 ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 
 # TODO: error handling
-# TODO: accept more settings from the client? (i.e. temperature)
+# TODO: accept more settings from the client?
 # TODO: only allow one IP address to:
 #       - /finetune N models
 #       - /generate N times per minute
 # TODO: change routes to be more CRUD-y? create, re-train, delete?
 # TODO: good logging!
-# TODO: include download_model script in repo?
 
 
 @app.route("/modelExpired", methods=['POST'])
@@ -31,15 +30,15 @@ async def model_expired(request):
                 headers=ALLOW_ACCESS_HEADER)
 
 
-@app.route("/finetune", methods=['POST'])
-async def finetune(request):
+@app.route("/train", methods=['POST'])
+async def train(request):
 
     data = request.json
     training_strings = data.get('training_strings')
 
     model_id = auth.create_model_id()
 
-    gpt.finetune(model_id, training_strings)
+    rnn.train(model_id, training_strings)
 
     auth.reset_expiration_time(model_id)
 
@@ -60,7 +59,7 @@ async def generate(request):
 
     auth.using_model(model_id)
 
-    output = gpt.generate(model_id, prompt, num_words)
+    output = rnn.generate(model_id, prompt, num_words)
 
     auth.reset_expiration_time(model_id)
 
