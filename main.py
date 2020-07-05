@@ -13,10 +13,11 @@ ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 #       - /finetune N models
 #       - /generate N times per minute
 # TODO: change routes to be more CRUD-y? create, re-train, delete?
+# TODO: good logging!
 
 
-@app.route("/modelIdExpired", methods=['POST'])
-async def model_id_expired(request):
+@app.route("/modelExpired", methods=['POST'])
+async def model_expired(request):
 
     data = request.json
 
