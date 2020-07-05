@@ -7,27 +7,13 @@ app = Sanic(__name__)
 
 ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 
+
 # TODO: error handling
-# TODO: accept more settings from the client?
 # TODO: only allow one IP address to:
-#       - /finetune N models
-#       - /generate N times per minute
-# TODO: change routes to be more CRUD-y? create, re-train, delete?
-# TODO: good logging!
-
-
-@app.route("/modelExpired", methods=['POST'])
-async def model_expired(request):
-
-    data = request.json
-
-    model_id = data.get('model_id', None)
-
-    is_valid_model_id = auth.is_valid_id(model_id)
-
-    return json({'is_expired': is_expired},
-                status=200,
-                headers=ALLOW_ACCESS_HEADER)
+#       - /finetune N models?
+#       - /generate N times per minute?
+# TODO: change to be more CRUD-y? create, re-train, delete?
+# TODO: add logging everywhere
 
 
 @app.route("/train", methods=['POST'])
@@ -52,14 +38,14 @@ async def generate(request):
 
     data = request.json
     model_id = data.get('model_id', None)
-    prompt = data.get('prompt', None)
-    num_words = data.get('num_words', None)
+
+    options = data.get('options', {})
 
     is_valid_model_id = auth.is_valid_id(model_id)
 
     auth.using_model(model_id)
 
-    output = rnn.generate(model_id, prompt, num_words)
+    output = rnn.generate(model_id, options)
 
     auth.reset_expiration_time(model_id)
 
