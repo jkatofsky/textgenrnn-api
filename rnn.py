@@ -33,12 +33,12 @@ def generate(model_id, options):
     os.chdir(model_dir)
 
     prompt = options.get('prompt', None)
-    num_words = options.get('num_words', 300)
+    max_length = options.get('max_length', 300)
     temperature = options.get('temperature', 0.5)
 
     textgen = textgenrnn("weights.hdf5")
     output = textgen.generate(prefix=prompt,
-                              max_gen_length=num_words,
+                              max_gen_length=max_length,
                               temperature=temperature,
                               return_as_list=True)[0]
 

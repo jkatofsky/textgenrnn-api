@@ -16,6 +16,7 @@ ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 # TODO: add logging everywhere
 
 
+# TODO: enforce max num of training strings?
 @app.route("/train", methods=['POST'])
 async def train(request):
 
