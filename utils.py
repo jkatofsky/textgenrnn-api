@@ -1,7 +1,7 @@
 def valid_training_strings(training_strings):
     return training_strings and \
         isinstance(training_strings, list) and \
-        len(training_strings) > 0 and \
+        0 < len(training_strings) < 10000 and \
         all(isinstance(elem, str) for elem in training_strings)
 
 def valid_model_id(model_id):
@@ -17,5 +17,5 @@ def valid_options(options):
     temperature = options.get('temperature', None)
 
     return (not prompt or isinstance(prompt, str)) and \
-        (not max_length or isinstance(max_length, int)) and \
-        (not temperature or isinstance(temperature, float))
+        (not max_length or (isinstance(max_length, int) and 0 < max_length <= 300)) and \
+        (not temperature or (isinstance(temperature, float) and 0 < temperature <= 1))

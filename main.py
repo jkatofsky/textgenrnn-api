@@ -18,7 +18,6 @@ SERVER_ERROR = json({'error': 'A server error occured on the server while traini
 # TODO: add logging everywhere & remove unecessary prints
 # TODO: right now, calls to rnn.train block processing of other requests
 #       - look into threading or better use of async functions to change this
-# TODO: enforce min/max num of training strings?
 
 @app.route("/train", methods=['POST'])
 async def train(request):
