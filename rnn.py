@@ -25,13 +25,9 @@ def train(model_id, training_strings):
     os.chdir(BASE_DIR)
 
 
-def generate(model_id, options):
+def generate(model_id, prompt, max_length, temperature):
     model_dir = _get_model_dir(model_id)
     os.chdir(model_dir)
-
-    prompt = options.get('prompt', None)
-    max_length = options.get('max_length', 300)
-    temperature = options.get('temperature', 0.5)
 
     textgen = textgenrnn("weights.hdf5")
     output = textgen.generate(prefix=prompt,

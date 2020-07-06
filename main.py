@@ -2,10 +2,13 @@ from sanic import Sanic
 from sanic.response import json
 import rnn
 import auth
+from utils import valid_training_strings, valid_model_id, valid_options
 
 app = Sanic(__name__)
 
 ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
+SERVER_ERROR = json({'error': 'A server error occured on the server while training the model.'},
+                    status=500, headers=ALLOW_ACCESS_HEADER)
 
 # TODO: keys, sessions, cookies, or tokens? anyone can call API currently
 # TODO: only allow one client to:
@@ -17,16 +20,13 @@ ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 #       - look into threading or better use of async functions to change this
 # TODO: enforce min/max num of training strings?
 
-
 @app.route("/train", methods=['POST'])
 async def train(request):
     try:
         data = request.json
-        training_strings = data.get('training_strings', [])
-        if len(training_strings) == 0 or \
-                any(not isinstance(elem, str) for elem in training_strings):
-            return json({'error': 'training_strings was not supplied properly.'},
-                        status=400,
+        training_strings = data.get('training_strings', None)
+        if not valid_training_strings(training_strings):
+            return json({'error': 'training_strings was not supplied properly.'}, status=400,
                         headers=ALLOW_ACCESS_HEADER)
 
         model_id = auth.create_model_id()
@@ -35,15 +35,10 @@ async def train(request):
 
         auth.reset_expiration_time(model_id)
 
-        response = json({'model_id': model_id},
-                        status=200,
-                        headers=ALLOW_ACCESS_HEADER)
+        return json({'model_id': model_id}, status=200, headers=ALLOW_ACCESS_HEADER)
 
     except Exception as e:
-        response = json({'error': 'A server error occured on the server while training the model.'},
-                        status=500, headers=ALLOW_ACCESS_HEADER)
-
-    return response
+        return SERVER_ERROR
 
 
 @app.route("/generate", methods=['POST'])
@@ -52,30 +47,30 @@ async def generate(request):
         data = request.json
         model_id = data.get('model_id', None)
         options = data.get('options', {})
-        if not model_id or not isinstance(model_id, str):
-            return json({'error': 'model_id was not supplied properly.'},
-                        status=400,
+        if not valid_model_id(model_id):
+            return json({'error': 'model_id was not supplied properly.'}, status=400,
+                        headers=ALLOW_ACCESS_HEADER)
+        if not valid_options(options):
+            return json({'error': 'options was not supplied properly.'}, status=400,
                         headers=ALLOW_ACCESS_HEADER)
         if not auth.is_valid_id(model_id):
-            return json({'error': 'Model corresponding with model_id does not exist.'},
-                        status=401,
+            return json({'error': 'Model corresponding with model_id does not exist.'}, status=401,
                         headers=ALLOW_ACCESS_HEADER)
+
+        prompt = options.get('prompt', None)
+        max_length = options.get('max_length', 300)
+        temperature = options.get('temperature', 0.5)
 
         auth.using_model(model_id)
 
-        output = rnn.generate(model_id, options)
+        output = rnn.generate(model_id, prompt, max_length, temperature)
 
         auth.reset_expiration_time(model_id)
 
-        response = json({'output': output},
-                        status=200,
-                        headers=ALLOW_ACCESS_HEADER)
+        return json({'output': output}, status=200, headers=ALLOW_ACCESS_HEADER)
 
     except Exception as e:
-        response = json({'error': 'A server error occured while training the model.'},
-                        status=500, headers=ALLOW_ACCESS_HEADER)
-
-    return response
+        return SERVER_ERROR
 
 
 if __name__ == "__main__":
