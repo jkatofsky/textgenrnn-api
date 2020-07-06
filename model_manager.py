@@ -20,7 +20,7 @@ def reset_expiration_time(model_id):
     model_id_last_used_map[model_id] = time.time()
 
 
-def is_valid_id(model_id):
+def model_exists(model_id):
     return model_id in model_id_last_used_map.keys()
 
 
