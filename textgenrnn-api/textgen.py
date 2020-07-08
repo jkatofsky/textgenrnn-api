@@ -10,7 +10,7 @@ BASE_DIR = os.getcwd()
 
 
 def _get_model_dir(model_id):
-    return 'tmp/%s' % model_id
+    return '../tmp/%s' % model_id
 
 
 def train(model_id, training_strings):

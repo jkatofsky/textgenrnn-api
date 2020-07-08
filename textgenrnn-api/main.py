@@ -18,7 +18,6 @@ SERVER_ERROR = json({'error': 'A server error occured on the server while traini
 # TODO: add logging everywhere & remove unecessary prints
 # TODO: right now, calls to textgen.train block processing of other requests
 #       - look into threading or better use of async functions to change this
-# TODO: rethink directory structure? if I get to 5+ .py files, then prob shouldn't be at top directory
 
 @app.route("/train", methods=['POST'])
 async def train(request):
