@@ -1,3 +1,4 @@
 sanic
 textgenrnn
 tensorflow
+sanic-cors

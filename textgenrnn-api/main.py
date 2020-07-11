@@ -1,14 +1,15 @@
 from sanic import Sanic
 from sanic.response import json
+from sanic_cors import CORS
 import textgen
 import model_manager
 from utils import valid_training_strings, valid_model_id, valid_options
 
 app = Sanic(__name__)
+CORS(app)
 
-ALLOW_ACCESS_HEADER = {'Access-Control-Allow-Origin': '*'}
 SERVER_ERROR = json({'error': 'A server error occured on the server while training the model.'},
-                    status=500, headers=ALLOW_ACCESS_HEADER)
+                    status=500)
 
 # TODO: keys, sessions, cookies, or tokens? anyone can call API currently
 # TODO: only allow one client to:
@@ -25,8 +26,7 @@ async def train(request):
         data = request.json
         training_strings = data.get('training_strings', None)
         if not valid_training_strings(training_strings):
-            return json({'error': 'training_strings was not supplied properly.'}, status=400,
-                        headers=ALLOW_ACCESS_HEADER)
+            return json({'error': 'training_strings was not supplied properly.'}, status=400)
 
         model_id = model_manager.create_model_id()
 
@@ -34,7 +34,7 @@ async def train(request):
 
         model_manager.reset_expiration_time(model_id)
 
-        return json({'model_id': model_id}, status=200, headers=ALLOW_ACCESS_HEADER)
+        return json({'model_id': model_id}, status=200)
 
     except Exception as e:
         return SERVER_ERROR
@@ -47,14 +47,11 @@ async def generate(request):
         model_id = data.get('model_id', None)
         options = data.get('options', {})
         if not valid_model_id(model_id):
-            return json({'error': 'model_id was not supplied properly.'}, status=400,
-                        headers=ALLOW_ACCESS_HEADER)
+            return json({'error': 'model_id was not supplied properly.'}, status=400)
         if not valid_options(options):
-            return json({'error': 'options was not supplied properly.'}, status=400,
-                        headers=ALLOW_ACCESS_HEADER)
+            return json({'error': 'options was not supplied properly.'}, status=400)
         if not model_manager.model_exists(model_id):
-            return json({'error': 'Model corresponding with model_id does not exist.'}, status=401,
-                        headers=ALLOW_ACCESS_HEADER)
+            return json({'error': 'Model corresponding with model_id does not exist.'}, status=401)
 
         prompt = options.get('prompt', None)
         max_length = options.get('max_length', 300)
@@ -66,7 +63,7 @@ async def generate(request):
 
         model_manager.reset_expiration_time(model_id)
 
-        return json({'output': output}, status=200, headers=ALLOW_ACCESS_HEADER)
+        return json({'output': output}, status=200)
 
     except Exception as e:
         return SERVER_ERROR
