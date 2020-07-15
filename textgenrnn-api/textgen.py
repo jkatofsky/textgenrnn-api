@@ -1,11 +1,6 @@
 from textgenrnn import textgenrnn
 import os
 
-# NOTE: this code is contingent on a line tweak in the textgenrnn module
-# the issue: https://github.com/minimaxir/textgenrnn/issues/197
-# my PR for the fix: https://github.com/minimaxir/textgenrnn/pull/199
-
-
 BASE_DIR = os.getcwd()
 
 

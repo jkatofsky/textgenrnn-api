@@ -1,4 +1,4 @@
 sanic
-textgenrnn
-tensorflow
+tensorflow=2.1.0
 sanic-cors
+-e git://github.com/minimaxir/textgenrnn.git@master#egg=textgenrnn
