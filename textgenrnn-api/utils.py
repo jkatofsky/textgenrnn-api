@@ -6,8 +6,7 @@ def valid_training_strings(training_strings):
 
 def valid_model_id(model_id):
     return model_id and \
-        isinstance(model_id, str) and \
-        len(model_id) == 12
+        isinstance(model_id, str)
 
 def valid_options(options):
     if not options:
