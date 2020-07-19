@@ -11,14 +11,6 @@ CORS(app)
 SERVER_ERROR = json({'error': 'A server error occured on the server while training the model.'},
                     status=500)
 
-# TODO: keys, sessions, cookies, or tokens? anyone can call API currently
-# TODO: only allow one client to:
-#       - /finetune N models?
-#       - /generate N times per minute?
-# TODO: change to be more CRUD-y? create, re-train, delete?
-# TODO: add logging everywhere & remove unecessary prints
-# TODO: right now, calls to textgen.train block processing of other requests
-#       - look into threading or better use of async functions to change this
 
 @app.route("/train", methods=['POST'])
 async def train(request):
