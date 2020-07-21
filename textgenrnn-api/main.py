@@ -9,7 +9,7 @@ load_dotenv(dotenv_path='../config.env')
 app = Sanic(__name__)
 CORS(app)
 
-SERVER_ERROR = json({'error': 'A server error occured on the server while training the model.'},
+SERVER_ERROR = json({'error': 'A server error occured.'},
                     status=500)
 
 from utils import valid_training_strings, valid_model_id, valid_options

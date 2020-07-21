@@ -8,8 +8,7 @@ MAX_MAX_LENGTH = int(os.getenv("MAX_MAX_LENGTH"))
 def valid_training_strings(training_strings):
     return training_strings and \
         isinstance(training_strings, list) and \
-        (MIN_TRAINING_CHARS < sum(len(training_string) for training_string in training_strings)
-         < MAX_TRAINING_CHARS) and \
+        (MIN_TRAINING_CHARS < sum(len(training_string) for training_string in training_strings) < MAX_TRAINING_CHARS) and \
         all(isinstance(elem, str) for elem in training_strings)
 
 
