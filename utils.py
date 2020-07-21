@@ -1,9 +1,4 @@
-try:
-    from .config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
-except:
-    from config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
-
-
+from config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
 import os
 
 

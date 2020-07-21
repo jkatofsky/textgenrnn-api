@@ -1,20 +1,12 @@
-try:
-    from .utils import valid_training_strings, valid_model_id, valid_options
-    from . import model_manager
-    from . import textgen
-    from .config import IS_LOCAL
-except:
-    from utils import valid_training_strings, valid_model_id, valid_options
-    import model_manager
-    import textgen
-    from config import IS_LOCAL
-
+from utils import valid_training_strings, valid_model_id, valid_options
+import model_manager
+import textgen
 from sanic import Sanic
 from sanic.response import json
 from sanic_cors import CORS
 import os
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0' if IS_LOCAL else '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 app = Sanic(__name__)
 CORS(app)
@@ -73,5 +65,7 @@ async def generate(request):
         return SERVER_ERROR
 
 
+# only excecutes when running server locally
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=IS_LOCAL, access_log=IS_LOCAL)
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+    app.run(host="0.0.0.0", port=8000, debug=True, access_log=True)

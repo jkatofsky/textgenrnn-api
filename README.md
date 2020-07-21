@@ -40,7 +40,6 @@ pip3 install -r requirements.txt
 and running `main.py`.
 
 ```bash
-cd textgenrnn-api
 python3 main.py
 ```
 

@@ -1,8 +1,4 @@
-try:
-    from .config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
-except:
-    from config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
-
+from config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
 import secrets
 import time
 import shutil
