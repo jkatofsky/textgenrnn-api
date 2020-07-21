@@ -46,4 +46,6 @@ cd textgenrnn-api
 python3 main.py
 ```
 
-I'm planning to run `textgenrnn-api` on Google Cloud's App Engine, which is why `app.yaml` is here. [Here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app to App Engine.
+To play with some settings for request handling/text generation, or to set an `IS_LOCAL` flag to enable debug logs and hot reload, take a look at `config.env`.
+
+I'm planning to run `textgenrnn-api` on Google Cloud's App Engine, which is the purpose of `app.yaml`. [Here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app to App Engine.

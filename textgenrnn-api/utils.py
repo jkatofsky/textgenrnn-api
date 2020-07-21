@@ -1,12 +1,22 @@
+import os
+
+MIN_TRAINING_CHARS = int(os.getenv("MIN_TRAINING_CHARS"))
+MAX_TRAINING_CHARS = int(os.getenv("MAX_TRAINING_CHARS"))
+MAX_MAX_LENGTH = int(os.getenv("MAX_MAX_LENGTH"))
+
+
 def valid_training_strings(training_strings):
     return training_strings and \
         isinstance(training_strings, list) and \
-        0 < len(training_strings) < 10000 and \
+        (MIN_TRAINING_CHARS < sum(len(training_string) for training_string in training_strings)
+         < MAX_TRAINING_CHARS) and \
         all(isinstance(elem, str) for elem in training_strings)
+
 
 def valid_model_id(model_id):
     return model_id and \
         isinstance(model_id, str)
+
 
 def valid_options(options):
     if not options:

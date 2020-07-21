@@ -3,11 +3,12 @@ import time
 import shutil
 import gc
 import asyncio
-
+import os
 
 model_id_last_used_map = {}
-MODEL_LIFESPAN = 1800  # 30 minute model lifespan
-MODEL_CLEANUP_INTERVAL = 60  # run cleanup every minute
+
+MODEL_LIFESPAN = int(os.getenv("MODEL_LIFESPAN"))
+MODEL_CLEANUP_INTERVAL = int(os.getenv("MODEL_CLEANUP_INTERVAL"))
 
 
 def create_model_id():

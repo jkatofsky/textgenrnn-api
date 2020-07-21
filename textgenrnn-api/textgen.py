@@ -2,6 +2,7 @@ from textgenrnn import textgenrnn
 import os
 
 BASE_DIR = os.getcwd()
+TRAINING_EPOCHS = int(os.getenv("TRAINING_EPOCHS"))
 
 
 def _get_model_dir(model_id):
@@ -14,7 +15,8 @@ def train(model_id, training_strings):
     os.chdir(model_dir)
 
     textgen = textgenrnn()
-    textgen.train_on_texts(training_strings, num_epochs=3, gen_epochs=0)
+    textgen.train_on_texts(
+        training_strings, num_epochs=TRAINING_EPOCHS, gen_epochs=0)
     textgen.save(weights_path="weights.hdf5")
 
     os.chdir(BASE_DIR)

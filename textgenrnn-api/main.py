@@ -1,15 +1,20 @@
 from sanic import Sanic
 from sanic.response import json
 from sanic_cors import CORS
-import textgen
-import model_manager
-from utils import valid_training_strings, valid_model_id, valid_options
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path='../config.env')
 
 app = Sanic(__name__)
 CORS(app)
 
 SERVER_ERROR = json({'error': 'A server error occured on the server while training the model.'},
                     status=500)
+
+from utils import valid_training_strings, valid_model_id, valid_options
+import model_manager
+import textgen
 
 
 @app.route("/train", methods=['POST'])
@@ -62,5 +67,6 @@ async def generate(request):
 
 
 if __name__ == "__main__":
+    IS_LOCAL = bool(int(os.getenv("IS_LOCAL")))
     app.add_task(model_manager.cleanup_loop())
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=IS_LOCAL, access_log=IS_LOCAL)

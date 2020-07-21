@@ -1,5 +1,4 @@
-env
 .vscode
-*.env
 __pycache__
 tmp
+env
