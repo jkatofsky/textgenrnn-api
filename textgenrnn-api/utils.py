@@ -1,8 +1,10 @@
-import os
+try:
+    from .config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
+except:
+    from config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
 
-MIN_TRAINING_CHARS = int(os.getenv("MIN_TRAINING_CHARS"))
-MAX_TRAINING_CHARS = int(os.getenv("MAX_TRAINING_CHARS"))
-MAX_MAX_LENGTH = int(os.getenv("MAX_MAX_LENGTH"))
+
+import os
 
 
 def valid_training_strings(training_strings):

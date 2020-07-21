@@ -1,3 +1,8 @@
+try:
+    from .config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
+except:
+    from config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
+
 import secrets
 import time
 import shutil
@@ -6,9 +11,6 @@ import asyncio
 import os
 
 model_id_last_used_map = {}
-
-MODEL_LIFESPAN = int(os.getenv("MODEL_LIFESPAN"))
-MODEL_CLEANUP_INTERVAL = int(os.getenv("MODEL_CLEANUP_INTERVAL"))
 
 
 def create_model_id():

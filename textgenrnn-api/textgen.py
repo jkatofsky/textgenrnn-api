@@ -1,8 +1,13 @@
+try:
+    from .config import TRAINING_EPOCHS
+except:
+    from config import TRAINING_EPOCHS
+
+
 from textgenrnn import textgenrnn
 import os
 
 BASE_DIR = os.getcwd()
-TRAINING_EPOCHS = int(os.getenv("TRAINING_EPOCHS"))
 
 
 def _get_model_dir(model_id):

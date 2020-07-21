@@ -1,5 +1,5 @@
 sanic
 sanic-cors
-tensorflow=2.1.0
--e git://github.com/minimaxir/textgenrnn.git@master#egg=textgenrnn
-python-dotenv
+gunicorn
+tensorflow
+textgenrnn

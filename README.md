@@ -46,6 +46,6 @@ python3 main.py
 
 ## Configuration & Deployment
 
-To play with some settings for request handling/text generation, or to set an `IS_LOCAL` flag to enable debug logs and hot reload when running locally, you can modify the variables in `config.env`. They're used throughout the API's code.
+To play with some settings for request handling/text generation, or to set an `IS_LOCAL` flag to enable debug logs and hot reload when running locally, you can modify the variables in `config.py`. They're used throughout the API's code.
 
 I'm planning to run `textgenrnn-api` on Google Cloud's App Engine, which is the purpose of `app.yaml`. [Here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app to App Engine.
