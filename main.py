@@ -5,8 +5,8 @@ from sanic import Sanic
 from sanic.response import json
 from sanic_cors import CORS
 import os
+import traceback
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 app = Sanic(__name__)
 CORS(app)
@@ -33,6 +33,7 @@ async def train(request):
         return json({'model_id': model_id}, status=200)
 
     except Exception as e:
+        traceback.print_exc()
         return SERVER_ERROR
 
 
@@ -62,6 +63,7 @@ async def generate(request):
         return json({'output': output}, status=200)
 
     except Exception as e:
+        traceback.print_exc()
         return SERVER_ERROR
 
 

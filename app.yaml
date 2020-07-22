@@ -1,3 +1,10 @@
 runtime: python38
+
 instance_class: F4_1G
-entrypoint: gunicorn -b :$PORT main:app
+
+env_variables:
+  SANIC_ACCESS_LOG: 'False'
+  TF_CPP_MIN_LOG_LEVEL: '3'
+
+entrypoint: gunicorn main:app --worker-class sanic.worker.GunicornWorker
+                    --timeout 300 --workers 8 -b :$PORT
