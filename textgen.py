@@ -8,7 +8,7 @@ def train(training_strings):
     model.train_on_texts(
         training_strings,
         num_epochs=TRAINING_EPOCHS,
-        verbose=0 if os.getenv("SANIC_ACCESS_LOG") else 1,
+        verbose=0 if os.getenv("SANIC_ACCESS_LOG") == "False" else 1,
         gen_epochs=0, save_epochs=0)
     return model
 
