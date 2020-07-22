@@ -5,7 +5,8 @@ instance_class: F4_1G
 env_variables:
   SANIC_ACCESS_LOG: 'False'
   TF_CPP_MIN_LOG_LEVEL: '3'
-  GOOGLE_APPLICATION_CREDENTIALS: 'storage-credentials.json'
+  GOOGLE_APPLICATION_CREDENTIALS: 'credentials.json'
+  MODEL_BUCKET_NAME: 'textgenrnn-api-models'
 
 entrypoint: gunicorn main:app --worker-class sanic.worker.GunicornWorker
                     --timeout 300 --workers 8 -b :$PORT

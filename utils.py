@@ -1,4 +1,4 @@
-from config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
+from settings import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
 
 
 def valid_training_strings(training_strings):
@@ -21,5 +21,10 @@ def valid_options(options):
     temperature = options.get('temperature', None)
 
     return (not prompt or isinstance(prompt, str)) and \
-        (not max_length or (isinstance(max_length, int) and 0 < max_length <= 300)) and \
+        (not max_length or (isinstance(max_length, int) and 0 < max_length <= MAX_MAX_LENGTH)) and \
         (not temperature or (isinstance(temperature, float) and 0 < temperature <= 1))
+
+
+def get_model_filenames(model_id):
+    filename = "%s-weights.hdf5" % model_id
+    return filename, '/tmp/%s' % filename

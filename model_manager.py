@@ -1,38 +1,35 @@
-import secrets
+from utils import get_model_filenames
 from textgenrnn import textgenrnn
 from google.cloud import storage
+import secrets
+import os
+
+MODEL_BUCKET_NAME = os.getenv('MODEL_BUCKET_NAME')
 
 client = storage.Client()
-bucket = client.get_bucket('textgenrnn-api-models')
+bucket = client.get_bucket(MODEL_BUCKET_NAME)
 
 
-def _get_filenames(model_id):
-    cloud_filename = "%s-weights.hdf5" % model_id
-    temp_filename = "tmp/%s" % cloud_filename
-    return cloud_filename, temp_filename
-
-
-def save_model(model):
+def save_model(model: textgenrnn):
     model_id = secrets.token_urlsafe(nbytes=16)
-    cloud_filename, temp_filename = _get_filenames(model_id)
+    filename, tmp_filename = get_model_filenames(model_id)
 
-    model.save(weights_path=temp_filename)
-    blob = bucket.blob(cloud_filename)
-    blob.upload_from_filename(temp_filename)
+    model.save(weights_path=tmp_filename)
+    blob = bucket.blob(filename)
+    blob.upload_from_filename(tmp_filename)
 
     return model_id
 
 
 def get_model(model_id):
+    filename, tmp_filename = get_model_filenames(model_id)
 
-    cloud_filename, temp_filename = _get_filenames(model_id)
-
-    blob = bucket.get_blob(cloud_filename)
+    blob = bucket.get_blob(filename)
     if not blob:
         return None
 
-    blob.download_to_filename(temp_filename)
+    blob.download_to_filename(tmp_filename)
 
-    model = textgenrnn(temp_filename)
+    model = textgenrnn(weights_path=tmp_filename)
 
     return model

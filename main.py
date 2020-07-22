@@ -1,10 +1,10 @@
 from utils import valid_training_strings, valid_model_id, valid_options
 import model_manager
 import textgen
+
 from sanic import Sanic
 from sanic.response import json
 from sanic_cors import CORS
-import os
 import traceback
 
 app = Sanic(__name__)

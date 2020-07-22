@@ -2,4 +2,4 @@
 __pycache__
 tmp
 env
-*credentials.json
+credentials.json

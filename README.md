@@ -2,7 +2,7 @@
 
 ## Description
 
-A lightweight Google Cloud API that allows clients to create RNNs trained on arbitirary strings, and then query them. Uses the phenomenal [textgenrnn](https://github.com/minimaxir/textgenrnn) Python module for the text generation. `textgenrnn-api` will not output anything worthy of a NLP paper, but it is pretty fun.
+A lightweight Python API, designed to run on Google Cloud, which allows clients to create RNNs trained on arbitirary strings and then query them. Uses the phenomenal [textgenrnn](https://github.com/minimaxir/textgenrnn) module for text generation and [Sanic](https://github.com/huge-success/sanic) as a web framework. `textgenrnn-api` will not output anything worthy of a NLP paper, but it's still pretty fun.
 
 ## Routes
 
@@ -41,12 +41,8 @@ This project is designed to run on [Google Cloud](https://cloud.google.com/). Th
    pip3 install -r requirements.txt
    ```
 
-4. [Create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-console) in your project to store the models. Here, you can set the lifespan of models using a [delete  lifycycle rule](https://cloud.google.com/storage/docs/lifecycle?_ga=2.24563129.-2066692002.1593836412#delete).
-5. [Download the credentials JSON for the model bucket](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication) so the server can access it and set an environment variable to the JSON's path.
-
-   ```bash
-   export GOOGLE_APPLICATION_CREDENTIALS=#filename here
-   ```
+4. [Create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-console) in your project to store the models. Here, you can set the lifespan of models using a [delete  lifycycle rule](https://cloud.google.com/storage/docs/lifecycle?_ga=2.24563129.-2066692002.1593836412#delete). Set the `MODEL_BUCKET_NAME` environment variable to the name of your bucket.
+5. [Download the a credentials JSON](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication) with permissions for the model bucket so the server can access it. Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of your JSON file.
 
 6. Run `main.py`.
 
@@ -54,16 +50,15 @@ This project is designed to run on [Google Cloud](https://cloud.google.com/). Th
    python3 main.py
    ```
 
-## Config
+## Settings
 
-To play with some settings for request handling/text generation you can modify the variables in `config.py`. They're used throughout the API's code.
-
+To play with some settings for request handling/text generation you can modify the variables in `settings.py`. They're used throughout the API's code.
 
 ## Deployment
 
-`app.yaml`'s `env_variables` section will set the storage credentials JSON path to an environment variable on the cloud, just like how you set it locally. So, make sure that you set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable correctly in `app.yaml`.
+In `app.yaml`, change the `MODEL_BUCKET_NAME` and `GOOGLE_APPLICATION_CREDENTIALS` `env_variables` to the same values you are using locally.
 
-Other than that, you should be able to deploy this repo right to App Engine:
+Then, you should be able to deploy this repo right to App Engine:
 
 ```bash
 gcloud config set [your project name]
