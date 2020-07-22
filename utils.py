@@ -1,5 +1,4 @@
 from config import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
-import os
 
 
 def valid_training_strings(training_strings):

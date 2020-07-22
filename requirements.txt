@@ -3,3 +3,4 @@ sanic-cors
 gunicorn
 tensorflow
 git+git://github.com/minimaxir/textgenrnn.git@master#egg=textgenrnn
+google-cloud-storage

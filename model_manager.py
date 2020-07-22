@@ -1,47 +1,38 @@
-from config import MODEL_LIFESPAN, MODEL_CLEANUP_INTERVAL
 import secrets
-import time
-import shutil
-import gc
-import asyncio
-import os
+from textgenrnn import textgenrnn
+from google.cloud import storage
 
-model_id_last_used_map = {}
+client = storage.Client()
+bucket = client.get_bucket('textgenrnn-api-models')
 
 
-def create_model_id():
+def _get_filenames(model_id):
+    cloud_filename = "%s-weights.hdf5" % model_id
+    temp_filename = "tmp/%s" % cloud_filename
+    return cloud_filename, temp_filename
+
+
+def save_model(model):
     model_id = secrets.token_urlsafe(nbytes=16)
-    using_model(model_id)
+    cloud_filename, temp_filename = _get_filenames(model_id)
+
+    model.save(weights_path=temp_filename)
+    blob = bucket.blob(cloud_filename)
+    blob.upload_from_filename(temp_filename)
+
     return model_id
 
 
-def reset_expiration_time(model_id):
-    model_id_last_used_map[model_id] = time.time()
+def get_model(model_id):
 
+    cloud_filename, temp_filename = _get_filenames(model_id)
 
-def model_exists(model_id):
-    return model_id in model_id_last_used_map.keys()
+    blob = bucket.get_blob(cloud_filename)
+    if not blob:
+        return None
 
+    blob.download_to_filename(temp_filename)
 
-def using_model(model_id):
-    model_id_last_used_map[model_id] = None
+    model = textgenrnn(temp_filename)
 
-
-def _delete_model(model_id):
-    shutil.rmtree('tmp/%s' % model_id)
-    del model_id_last_used_map[model_id]
-    gc.collect()
-
-
-def _cleanup_unused_models():
-    current_time = time.time()
-    for model_id in list(model_id_last_used_map):
-        last_used_time = model_id_last_used_map[model_id]
-        if last_used_time and (current_time - last_used_time) > MODEL_LIFESPAN:
-            _delete_model(model_id)
-
-
-async def cleanup_loop():
-    while True:
-        await asyncio.sleep(MODEL_CLEANUP_INTERVAL)
-        _cleanup_unused_models()
+    return model
