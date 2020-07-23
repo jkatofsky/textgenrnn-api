@@ -1,4 +1,7 @@
-from settings import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH
+from settings import MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_MAX_LENGTH, IS_PROD
+import secrets
+import os
+import shutil
 
 
 def valid_training_strings(training_strings):
@@ -25,6 +28,23 @@ def valid_options(options):
         (not temperature or (isinstance(temperature, float) and 0 < temperature <= 1))
 
 
-def get_model_filenames(model_id):
-    filename = "%s-weights.hdf5" % model_id
-    return filename, '/tmp/%s' % filename
+def get_model_id():
+    return secrets.token_urlsafe(nbytes=16)
+
+
+def get_model_dir(model_id):
+    tmp_folder = '/tmp' if IS_PROD else './tmp'
+    model_dir = '%s/%s' % (tmp_folder, model_id)
+    return model_dir
+
+
+def using_temp_model_dir(model_id):
+    model_dir = get_model_dir(model_id)
+    os.mkdir(model_dir)
+    os.chdir(model_dir)
+
+
+def done_with_temp_model_dir(model_id, cd_to):
+    model_dir = get_model_dir(model_id)
+    os.chdir(cd_to)
+    shutil.rmtree(model_dir)

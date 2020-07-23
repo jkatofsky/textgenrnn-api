@@ -3,6 +3,7 @@ runtime: python38
 instance_class: F4_1G
 
 env_variables:
+  IS_PROD: 'True'
   SANIC_ACCESS_LOG: 'False'
   TF_CPP_MIN_LOG_LEVEL: '3'
   GOOGLE_APPLICATION_CREDENTIALS: 'credentials.json'

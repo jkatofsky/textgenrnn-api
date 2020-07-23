@@ -1,3 +1,6 @@
+import os
+
+IS_PROD = True if os.getenv("IS_PROD") else False
 MIN_TRAINING_CHARS = 1000
 MAX_TRAINING_CHARS = 30000
 TRAINING_EPOCHS = 3
