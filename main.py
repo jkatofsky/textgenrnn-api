@@ -59,8 +59,3 @@ async def generate(request):
     except Exception as e:
         traceback.print_exc()
         return SERVER_ERROR
-
-
-# only excecutes when running server locally
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True, access_log=True)

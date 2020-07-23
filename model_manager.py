@@ -1,12 +1,20 @@
 from utils import get_model_id, get_model_filenames
+from settings import MODEL_BUCKET_NAME, CREDENTIALS_JSON_PATH, PROJECT_NAME
 
 from textgenrnn import textgenrnn
 from google.cloud import storage
+from google.oauth2 import service_account
+import json
 import os.path
 
-MODEL_BUCKET_NAME = os.getenv('MODEL_BUCKET_NAME')
 
-client = storage.Client()
+with open(CREDENTIALS_JSON_PATH) as credentials_fp:
+    credentials_info = json.load(credentials_fp)
+
+credentials = service_account.Credentials.from_service_account_info(
+    credentials_info)
+
+client = storage.Client(project=PROJECT_NAME, credentials=credentials)
 bucket = client.get_bucket(MODEL_BUCKET_NAME)
 
 

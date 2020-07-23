@@ -15,10 +15,6 @@ A lightweight Python API, designed to run on Google Cloud, which allows clients 
   - supply a `model_id`, and optionally, an `options` object which can contain the `prompt`, `max_length`, and/or `temperature` fields
   - get back `output`
 
-## Google Cloud
-
-This project is designed to run on [Google Cloud](https://cloud.google.com/). The rest of this README assumes you have a [Google Cloud project created](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and the [gcloud SDK](https://cloud.google.com/sdk/install) installed.
-
 ## Setup
 
 1. Clone this repository.
@@ -41,24 +37,19 @@ This project is designed to run on [Google Cloud](https://cloud.google.com/). Th
    pip3 install -r requirements.txt
    ```
 
-4. [Create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-console) in your project to store the models. Here, you can set the lifespan of models using a [delete  lifycycle rule](https://cloud.google.com/storage/docs/lifecycle?_ga=2.24563129.-2066692002.1593836412#delete). Set the `MODEL_BUCKET_NAME` environment variable to the name of your bucket.
-5. [Download a credentials JSON](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication) for your project with permissions for the model bucket. Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of this JSON file.
+4. Create a [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and set the `PROJECT_NAME` variable appropriately in `settings.py`.
+5. [Create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-console) in your project to store the models and set the `MODEL_BUCKET_NAME` variable appropriately in `settings.py`. You can optionally set a lifespan for the models using a [delete  lifycycle rule](https://cloud.google.com/storage/docs/lifecycle?_ga=2.24563129.-2066692002.1593836412#delete).
+6. [Download a service account credentials JSON](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication) for your project with permissions for the model bucket and set the `CREDENTIALS_JSON_PATH` variable appropriately in `settings.py`.
 
-6. Run `main.py`.
+7. Run the server.
 
    ```bash
-   python3 main.py
+   sanic main.app --host=0.0.0.0 --port=8000 --debug --workers=#your number of CPU cores
    ```
-
-## Settings
-
-To play with some settings for request handling/text generation, you can modify the variables in `settings.py`. They're used throughout the API's code.
 
 ## Deployment
 
-In `app.yaml`, change the `MODEL_BUCKET_NAME` and `GOOGLE_APPLICATION_CREDENTIALS` `env_variables` to the same values you are using locally.
-
-Then, you should be able to deploy this repo right to App Engine:
+Assuming you have the [gcloud SDK](https://cloud.google.com/sdk/install) installed, you should be able to deploy this repo right to App Engine:
 
 ```bash
 gcloud config set [your-project-name]
