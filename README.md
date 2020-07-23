@@ -41,19 +41,17 @@ A lightweight Python API, designed to run on Google Cloud, which allows clients 
 5. [Create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets#storage-create-bucket-console) in your project to store the models and set the `MODEL_BUCKET_NAME` variable appropriately in `settings.py`. You can optionally set a lifespan for the models using a [delete  lifycycle rule](https://cloud.google.com/storage/docs/lifecycle?_ga=2.24563129.-2066692002.1593836412#delete).
 6. [Download a service account credentials JSON](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication) for your project with permissions for the model bucket and set the `CREDENTIALS_JSON_PATH` variable appropriately in `settings.py`.
 
-7. Run the server.
+7. To test the server locally, use the following command.
 
    ```bash
    sanic main.app --host=0.0.0.0 --port=8000 --debug --workers=#your number of CPU cores
    ```
 
-## Deployment
+8. Assuming you have the [gcloud SDK](https://cloud.google.com/sdk/install) installed, you can deploy this repo right to App Engine:
 
-Assuming you have the [gcloud SDK](https://cloud.google.com/sdk/install) installed, you should be able to deploy this repo right to App Engine:
-
-```bash
-gcloud config set [your-project-name]
-gcloud app deploy
-```
+   ```bash
+   gcloud config set #your project name
+   gcloud app deploy
+   ```
 
 For more information, [here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app.
