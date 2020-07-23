@@ -11,4 +11,5 @@ README.md
 .vscode
 tmp
 env
+*.sh
 *.hdf5
