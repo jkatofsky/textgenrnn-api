@@ -54,4 +54,4 @@ A lightweight Python API, designed to run on Google Cloud, which allows clients 
    gcloud app deploy
    ```
 
-For more information, [here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app.
+   For more information, [here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Python 3 app.
