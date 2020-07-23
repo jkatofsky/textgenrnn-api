@@ -2,5 +2,5 @@ sanic
 sanic-cors
 gunicorn
 tensorflow
-git+git://github.com/minimaxir/textgenrnn.git@master#egg=textgenrnn
+git+git://github.com/jkatofsky/textgenrnn.git@fix-save-epochs#egg=textgenrnn
 google-cloud-storage
