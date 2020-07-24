@@ -44,7 +44,7 @@ def generate():
         model = model_manager.download_model(model_id)
 
         if not model:
-            return {'error': 'Model corresponding with model_id does not exist.'}, 401
+            return {'error': 'Model corresponding with model_id does not exist.'}, 404
 
         prompt = options.get('prompt', None)
         max_length = options.get('max_length', 300)

@@ -3,5 +3,4 @@ __pycache__
 tmp
 env
 credentials.json
-*.sh
 *.hdf5

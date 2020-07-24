@@ -6,4 +6,4 @@ env_variables:
   IS_PROD: 'True'
   TF_CPP_MIN_LOG_LEVEL: '3'
 
-entrypoint: gunicorn app:app --bind=:$PORT --workers=8 --timeout 400
+entrypoint: gunicorn app:app --bind=:$PORT --workers=8 --timeout=400

@@ -4,11 +4,10 @@ from textgenrnn import textgenrnn
 
 def train(training_strings):
     model = textgenrnn()
-    model.train_on_texts(
-        training_strings,
-        num_epochs=TRAINING_EPOCHS,
-        verbose=0 if IS_PROD else 1,
-        gen_epochs=0, save_epochs=0)
+    model.train_on_texts(training_strings,
+                         num_epochs=TRAINING_EPOCHS,
+                         verbose=0 if IS_PROD else 1,
+                         gen_epochs=0, save_epochs=0)
     return model
 
 
