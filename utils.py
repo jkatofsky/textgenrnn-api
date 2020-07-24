@@ -3,6 +3,18 @@ from settings import (MIN_TRAINING_CHARS, MAX_TRAINING_CHARS, MAX_PROMPT_CHARS,
 import uuid
 import os
 import shutil
+import gc
+import tensorflow as tf
+
+
+def make_tmp_directory_on_local():
+    if not IS_PROD and not os.path.isdir('./tmp'):
+        os.mkdir('./tmp')
+
+
+def clear_memory():
+    tf.keras.backend.clear_session()
+    gc.collect()
 
 
 def valid_training_strings(training_strings):

@@ -1,4 +1,5 @@
-from utils import valid_training_strings, valid_model_id, valid_options
+from utils import (valid_training_strings, valid_model_id, valid_options,
+                   make_tmp_directory_on_local, clear_memory)
 import model_manager
 import textgen
 
@@ -11,6 +12,8 @@ CORS(app)
 
 SERVER_ERROR = {'error': 'A server error occured.'}, 500
 
+make_tmp_directory_on_local()
+
 
 @app.route("/train", methods=['POST'])
 def train():
@@ -22,6 +25,8 @@ def train():
 
         model = textgen.train(training_strings)
         model_id = model_manager.upload_model(model)
+
+        clear_memory()
 
         return {'model_id': model_id}, 200
 
@@ -51,6 +56,8 @@ def generate():
         temperature = options.get('temperature', 0.5)
 
         output = textgen.generate(model, prompt, max_length, temperature)
+
+        clear_memory()
 
         return {'output': output}, 200
 
