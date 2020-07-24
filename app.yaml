@@ -4,7 +4,6 @@ instance_class: F4_1G
 
 env_variables:
   IS_PROD: 'True'
-  SANIC_ACCESS_LOG: 'False'
   TF_CPP_MIN_LOG_LEVEL: '3'
 
-entrypoint: sanic main.app --port=$PORT --workers=8
+entrypoint: gunicorn app.app -b :$PORT --workers 8

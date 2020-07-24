@@ -1,5 +1,6 @@
-sanic
-sanic-cors
+flask
+flask-cors
+gunicorn
 tensorflow
 git+git://github.com/jkatofsky/textgenrnn.git@fix-save-epochs#egg=textgenrnn
 google-cloud-storage
