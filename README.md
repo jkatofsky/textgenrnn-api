@@ -2,7 +2,7 @@
 
 ## Description
 
-A lightweight Python API, designed to run on Google Cloud, which allows clients to train RNNs on arbitirary strings and then generate output. Uses the phenomenal [textgenrnn](https://github.com/minimaxir/textgenrnn) module for text generation and [Flask](https://flask.palletsprojects.com/en/1.1.x/) as a web framework. `textgenrnn-api` will not output anything worthy of a NLP paper, but it's still pretty fun.
+A lightweight Python API, designed to run on Google Cloud, which allows clients to train RNNs on arbitirary strings and then generate output. Uses the phenomenal [textgenrnn](https://github.com/minimaxir/textgenrnn) module for text generation and [Flask](https://github.com/pallets/flask) as a web framework. `textgenrnn-api` will not output anything worthy of a NLP paper, but it's still pretty fun.
 
 ## Routes
 
