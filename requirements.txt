@@ -1,5 +1,6 @@
 flask
 flask-cors
+cerberus
 gunicorn
 tensorflow
 git+git://github.com/jkatofsky/textgenrnn.git@fix-save-epochs#egg=textgenrnn

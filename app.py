@@ -1,7 +1,8 @@
-from utils import (valid_training_strings, valid_model_id, valid_options,
+from utils import (TRAIN_VALIDATOR, GENERATE_VALIDATOR,
                    make_tmp_directory_on_local, clear_memory)
 import model_manager
 import textgen
+from settings import DEFAULT_MAX_LENGTH, DEFAULT_TEMPERATURE
 
 from flask import Flask, request
 from flask_cors import CORS
@@ -19,13 +20,14 @@ make_tmp_directory_on_local()
 def train():
     try:
         data = request.json
-        training_strings = data.get('training_strings', None)
-        if not valid_training_strings(training_strings):
-            return {'error': 'training_strings was not supplied properly.'}, 400
+        if not TRAIN_VALIDATOR.validate(data):
+            return {'errors': TRAIN_VALIDATOR.errors}, 400
 
+        training_strings = data.get('training_strings')
         model = textgen.train(training_strings)
         model_id = model_manager.upload_model(model)
 
+        del model
         clear_memory()
 
         return {'model_id': model_id}, 200
@@ -39,24 +41,24 @@ def train():
 def generate():
     try:
         data = request.json
+
+        if not GENERATE_VALIDATOR.validate(data):
+            return {'errors': GENERATE_VALIDATOR.errors}, 400
+
         model_id = data.get('model_id', None)
-        options = data.get('options', {})
-        if not valid_model_id(model_id):
-            return {'error': 'model_id was not supplied properly.'}, 400
-        if not valid_options(options):
-            return {'error': 'options was not supplied properly.'}, 400
 
         model = model_manager.download_model(model_id)
 
         if not model:
             return {'error': 'Model corresponding with model_id does not exist.'}, 404
 
-        prompt = options.get('prompt', None)
-        max_length = options.get('max_length', 300)
-        temperature = options.get('temperature', 0.5)
+        prompt = data.get('prompt', None)
+        max_length = data.get('max_length', DEFAULT_MAX_LENGTH)
+        temperature = data.get('temperature', DEFAULT_TEMPERATURE)
 
         output = textgen.generate(model, prompt, max_length, temperature)
 
+        del model
         clear_memory()
 
         return {'output': output}, 200

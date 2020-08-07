@@ -6,13 +6,13 @@ A lightweight Python API, designed to run on Google Cloud, which allows clients 
 
 ## Routes
 
-`textgenrnn-api` has two routes:
+`textgenrnn-api` has two `POST` routes:
 
 - `/train`:
   - supply a list of `training_strings`
   - get back `model_id`
 - `/generate`:
-  - supply a `model_id`, and optionally, an `options` object which can contain the `prompt`, `max_length`, and/or `temperature` fields
+  - supply a `model_id`, and optionally, a `prompt`, `max_length`, and/or `temperature`
   - get back `output`
 
 ## Setup
