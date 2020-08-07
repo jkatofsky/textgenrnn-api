@@ -11,7 +11,7 @@ import traceback
 app = Flask(__name__)
 CORS(app)
 
-SERVER_ERROR = {'error': 'A server error occured.'}, 500
+SERVER_ERROR = {'error': 'a server error occured'}, 500
 
 make_tmp_directory_on_local()
 
@@ -20,8 +20,9 @@ make_tmp_directory_on_local()
 def train():
     try:
         data = request.json
+
         if not TRAIN_VALIDATOR.validate(data):
-            return {'errors': TRAIN_VALIDATOR.errors}, 400
+            return {'error': TRAIN_VALIDATOR.errors}, 400
 
         training_strings = data.get('training_strings')
         model = textgen.train(training_strings)
@@ -43,14 +44,14 @@ def generate():
         data = request.json
 
         if not GENERATE_VALIDATOR.validate(data):
-            return {'errors': GENERATE_VALIDATOR.errors}, 400
+            return {'error': GENERATE_VALIDATOR.errors}, 400
 
         model_id = data.get('model_id', None)
 
         model = model_manager.download_model(model_id)
 
         if not model:
-            return {'error': 'Model corresponding with model_id does not exist.'}, 404
+            return {'error': 'model corresponding with model_id does not exist'}, 404
 
         prompt = data.get('prompt', None)
         max_length = data.get('max_length', DEFAULT_MAX_LENGTH)
