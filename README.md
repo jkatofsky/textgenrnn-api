@@ -54,3 +54,18 @@ A lightweight Python API, designed to run on Google Cloud, which allows clients 
    ```
 
    For more information, [here](https://cloud.google.com/appengine/docs/standard/python3/building-app) is Google's guide for deploying a Flask project to App Engine.
+
+## TODOs
+
+- [ ] Investigate feasability of running on Compute Engine or a GC AI offering, could really let me increase the speed/efficacy of the ML.
+- [ ] Specify as JSON routes & provide CURL example on README.
+- [ ] Play with default textgen parameters (# epochs, # training chars, word-level vs. char-level - could have a flag for this in settings.py).
+- [ ] If my [PR](https://github.com/minimaxir/textgenrnn/pull/207) is accepted, use the proper fork of textgenrnn again.
+- [ ] Return the expiration time of the model with every response?
+- [ ] Memory usage issues:
+    - Server is using ~2 times more memory than local is.
+    	- Use less workers?
+          - Still using 1.9 GB even with 3 workers…so it’s one process that’s using it all.
+    	- Try loading and deleting tensorflow dynamically…?
+    	- It’s not the memory from training a model, I think, but the memory from loading tensorflow into memory when the app engine loads from sleep.
+  	- The issue appears [this way](https://github.com/minimaxir/textgenrnn/issues/208) locally - but doesn't seem to be the same issue as described above?
